@@ -7,11 +7,11 @@ from sqlalchemy import create_engine
  
 Base = declarative_base()
 
-# Class to store user details...
+#Class to store user details...
 class User(Base):
     """docstring for User"""
     __tablename__ = 'user'
-        
+    
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
@@ -19,10 +19,10 @@ class User(Base):
 
     @property
     def serialize(self):
-        #Returns Object data in easily serialiazable form...
+        #Returns Object data in easily serializable form...
         return {
-        'id' :self.id,
-        'name' :self.name,
+        'id' : self.id,
+        'name' : self.name,
         'email' : self.email,
         'picture' : self.picture,
         }
@@ -145,10 +145,10 @@ class HotelDetails(Base):
         }
  
 
-#School Class ( Category 3 ).....
-class School(object):
-    """docstring for Schools"""
-    __tablename__ = 'school' 
+#Destination Class ( Category 3 ).....
+class Destination(Base):
+    """docstring for Destinations"""
+    __tablename__ = 'destination' 
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
@@ -169,16 +169,16 @@ class School(object):
         
 
 #Further sub category for School Class...
-class SchoolDetails(Base):
+class DestinationDetails(Base):
     """docstring for SchoolDetails"""
-    __tablename__ = 'schooldetails'
+    __tablename__ = 'destinationdetails'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     description = Column(String(250))
     address = Column(String(250))
-    school_id = Column(Integer, ForeignKey('school.id'))
-    school = relationship(School)
+    destination_id = Column(Integer, ForeignKey('destination.id'))
+    destination = relationship(Destination)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
     
@@ -190,10 +190,10 @@ class SchoolDetails(Base):
         'id' : self.id,
         'description' : self.description,
         'address' : self.address,
-        'school_id' : self.school_id,
+        'destination_id' : self.school_id,
         'user_id' : self.user_id
         }
     
-    
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+
+engine = create_engine('sqlite:///Catalog.db')
 Base.metadata.create_all(engine)
