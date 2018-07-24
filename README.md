@@ -15,16 +15,15 @@ Project 2 - Udacity IoT Foundation Nanodegree
  
  ## Skills Honed
  1. Python
-@@ -8,7 +15,7 @@ This web app is a project for the Udacity IoT Foundation Nanodegree Course.
+ This web app is a project for the Udacity IoT Foundation Nanodegree Course.
  4. OAuth2.0
  5. Flask Framework
  
--# Installation
-+## Installation
+# Installation
  There are some dependancies and a few instructions on how to run the application.
 +Initially, install the vagrant, virtual box, and then clone the FSND vagrant file as it contains all setups preinstalled, then start running project.py files , as per the guidelines below...
  
-@@ -49,3 +56,18 @@ To get the Google login working there are a few additional steps:
+To get the Google login working there are a few additional steps:
  12. Rename JSON file to client_secrets.json
  13. Place JSON file in item-catalog directory that you cloned from here
  14. Run application using `python Catalog-App project.py`
