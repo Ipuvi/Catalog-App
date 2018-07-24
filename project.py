@@ -35,7 +35,7 @@ session = DBSession()
 
 
 # Create anti-forgery state token
-@app.route('/login' , methods=['POST'])
+@app.route('/login')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
@@ -282,10 +282,10 @@ def editCategory(category_id):
 def deleteCategory(category_id):
 	#return "This page will be for deleting an existing category"
 	deletedCategory = session.query(Category).filter_by(id = category_id).one()
-	items = session.query(deletedCategory).all()
+	items = session.query(CategoryList).filter_by(category_id = category_id).all()
 	if 'username' not in login_session:
 		return redirect('/login')
-	if deletedRestaurant.user_id != login_session['user_id']:
+	if deletedCategory.user_id != login_session['user_id']:
 		return "<script>function myFunction() {alert('You are not authorized to delete this category. Please create your own category in order to delete.');}</script><body onload='myFunction()''>"
 	if request.method == 'POST':
 		session.delete(deletedCategory)
@@ -341,7 +341,7 @@ def editCategoryList(category_id, list_id):
 		session.add(editedChoice)
 		session.commit()
 		flash("Category List Successfully Edited")
-		return redirect(url_for('showCategoryList'))
+		return redirect(url_for('showCategoryList' , category_id = category_id))
 	else:
 		return render_template('editCategoryList.html' , i = editedChoice, category = categoryList)
 
@@ -360,7 +360,7 @@ def deleteFromCategoryList(category_id, list_id):
 		session.delete(deletedChoice)
 		session.commit()
 		flash("Selected Choice Successfully Deleted")
-		return redirect(url_for('showCategoryList'))
+		return redirect(url_for('showCategoryList' , category_id = category_id))
 	else:
 		return render_template('deleteFromCategoryList.html' , i = deletedChoice , items = Item, category_id = category_id)
 
