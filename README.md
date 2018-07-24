@@ -7,11 +7,11 @@ This web app is a project for the Udacity IoT Foundation Nanodegree Course.
 This web app is a project for the Udacity (https://classroom.udacity.com/nanodegrees/nd501-iniot).
 
 ## About
-+This project is a RESTful web application utilizing the Flask framework which accesses a SQL database that populates categories and their items. OAuth2 provides authentication for further CRUD functionality on the application. Currently OAuth2 is implemented for Google Accounts.
+This project is a RESTful web application utilizing the Flask framework which accesses a SQL database that populates categories and their items. OAuth2 provides authentication for further CRUD functionality on the application. Currently OAuth2 is implemented for Google Accounts.
 
 ## In This Repo
-+This project has one main Python module `project.py` which runs the Flask application. A SQL database is created using the `databasetup.py` module and you can populate the database with test data using `CatalogData.py`.
-+The Flask application uses stored HTML templates in the tempaltes folder to build the front-end of the application. CSS/JS/Images are stored in the static directory.
+This project has one main Python module `project.py` which runs the Flask application. A SQL database is created using the `databasetup.py` module and you can populate the database with test data using `CatalogData.py`.
+The Flask application uses stored HTML templates in the tempaltes folder to build the front-end of the application. CSS/JS/Images are stored in the static directory.
  
  ## Skills Honed
  1. Python
@@ -30,7 +30,7 @@ To get the Google login working there are a few additional steps:
  1. Install Vagrant and VirtualBox
  2. Clone the fullstack-nanodegree-vm
  3. Launch the Vagrant VM (vagrant up)
- 4. Write your Flask application locally in the vagrant/catalog directory (which will automatically be synced to /vagrant/catalog within     the VM).
+ 4. Write your Flask application locally in the vagrant/catalog directory (which will automatically be synced to /vagrant/catalog within the VM).
  5.Run your application within the VM (python /vagrant/catalog/application.py)
       Access and test your application by visiting http://localhost:8000 locally
 
