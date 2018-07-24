@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Bootstrap CDN-->
+<link rel="stylesheet" type="text/css" href="{{url_for('static' , filename = 'style90.css')}}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+
+</head>
+<body>
+
+<!--Nav Bar-->
+<div class="fluid-container">
+<div class="navigationbar">
+  <ul class="topnav" >
+  <li><a class="logo"><img src="{{url_for('static' , filename = 'images/logo.png')}}"></a></li>
+  <li class="right">{%if 'username' not in session %}
+      <a href="{{url_for('showLogin')}}">Login/SignIn</a>
+      {% else %}
+      <a href="{{url_for('disconnect')}}">Logout </a>
+      {% endif %}</a></li>
+  <li class="right"><a href="#about">About</a></li>
+  <li class="right"><a href="#contact">Contact</a></li>
+  <li class="right"><a href="{{url_for('showCategory')}}">Catalog</a></li>
+  </ul>
+</div>
+</div>
+<!--End Nav Bar-->
+
+
+<!--Main Section-->
+<div class="fluid-container">
+<div class="container">
+<div class="spacer">
+  &nbsp;
+</div>
+ <div class = "row">
+ <div class="col-md-3"></div>
+ <div class="pane">
+ <div class="col-md-9">
+
+<h1>Edit {{i.name}}</h1>
+
+<form action="{{url_for('editListItem' , category_id = choice.category_id, list_id = choice.id, item_id = i.id)}}" , method = "post">
+
+<dl>
+  <dt>Name:</dt>
+    <dd><input type ='text' size='30' name='name' placeholder='{{i.name}}'></dd>
+  <dt>Description:</dt>
+    <dd><textarea name = 'description' rows='5' cols='40' placeholder = '{{i.description}}'></textarea></dd>
+  <dt>Price:</dt>
+    <dd><input type = 'text' size = '8' name='price' placeholder = '{{i.price}}'></dd>
+</dl>
+
+  <input type="submit" value = "Edit">
+  <a href = "{{url_for('showListItems' , category_id = choice.category_id, list_id = choice.id)}}"><input type="button" value = "Cancel"></a>
+</form>
+
+ </div>
+ </div>
+ </div>
+</div>
+</div>
+<!--End Main Section-->
+
+
+<div class="spacer">
+  &nbsp;
+</div>
+<div class="spacer">
+  &nbsp;
+</div>
+
+
+<!--Footer-->
+<footer>
+<div class="fluid-container">
+<div class="footer">
+    <div class="row">
+      <div class="col-md-5">
+      <h5 class="copy">
+        &copy; 2018 Catalog App, No rights reserved!
+        <br>
+        Designed &amp; Developed by <a href="https://www.github.com/ipuvi/">Ipuvi Mishra</a>
+        <br>
+        Made with Bootstrap</h5>
+      </div>
+      <div class="col-md-2">
+        <h5>Navigate</h5>
+        <ul class="list-unstyled">
+          <li><a href="Home_project.html">Home</li></a>
+          <li><a href="profile.html">Profile</li></a>
+        </ul>
+      </div>
+      <div class="col-md-2">
+        <h5>About</h5>
+        <ul class="list-unstyled">
+          <li><a href="about.html">About Us</li></a>
+          <li><a href="">Highlights</li></a>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5>Connect with us!</h5>
+        <ul class="list-unstyled">
+          <li><a href="">Contacts</li></a>
+          <li><a href="">FAQs</li></a>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</footer>
+<!--End Footer-->
+
+</body>
+</html>

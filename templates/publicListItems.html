@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<!--Bootstrap CDN and Styles..--> 
+<!--Bootstrap CDN and Styles-->
 <link rel="stylesheet" type="text/css" href="{{url_for('static' , filename = 'style90.css')}}">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<!--Nav Bar -->
+<!--Nav Bar-->
 <div class="fluid-container">
 <div class="navigationbar">
   <ul class="topnav" >
@@ -28,10 +28,11 @@
   </ul>
 </div>
 </div>
-<!-- End Nav Bar -->
+<!--End Nav Bar-->
 
 
-<!--Main Section -->
+
+<!--Main Section-->
 <div class="fluid-container">
 <div class="container">
 <div class="spacer">
@@ -42,7 +43,7 @@
  <div class="pane">
  <div class="col-md-9">
 
-<h1><a href="{{url_for('showCategory')}}">{{category.name}}</a></h1>
+<h1><a href="{{url_for('showCategoryList', category_id = choice.category_id, list_id = choice.id)}}">{{choice.name}}</a></h1>
 <figure class="creator">
         <img src="{{ creator.picture}}">
         <figcaption>{{ creator.name }}</figcaption>
@@ -61,16 +62,16 @@
   {% endif %}
   {% endwith %}
 </div>
-{% for item in list %}
-<a href="{{url_for('showListItems', category_id = category.id, list_id = item.id)}}"><li>{{item.name}}</li></a>
-<div class="editdeletepane">
-  <a href = {{url_for('editCategoryList', category_id = category.id, list_id = item.id)}} ><input type="button" value = "Edit"></a>
-  <a href= {{url_for('deleteFromCategoryList', category_id = category.id, list_id = item.id)}} ><input type="button" value = "Delete"></a>
-</div>
+{% for item in Item %}
+<ul>
+<li><strong>{{item.name}}</strong></li>
+Price: {{item.price}}
+</br>
+Description: {{item.description}}
+</ul>
 </br>
 {% endfor %}
 
-<h3><a href="{{url_for('newToCategoryList', category_id = category.id)}}">Click Here</a> to Add More Items...</h3>
 
  </div>
  </div>
@@ -78,6 +79,7 @@
 </div>
 </div>
 <!--End Main Section-->
+
 
 
 <div class="spacer">

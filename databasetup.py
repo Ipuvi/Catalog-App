@@ -17,6 +17,7 @@ class User(Base):
     email = Column(String(250), nullable=False)
     picture = Column(String(250))
 
+
     @property
     def serialize(self):
         #Returns Object data in easily serializable form...

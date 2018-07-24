@@ -18,11 +18,13 @@ import json
 from flask import make_response
 import requests
 
+
+#To get Client Id from json file...
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Catalog App"
 
-
+#Connect to database and create database session...
 engine = create_engine('sqlite:///Catalog.db')
 Base.metadata.bind = engine
 
@@ -33,12 +35,11 @@ session = DBSession()
 
 
 # Create anti-forgery state token
-@app.route('/login')
+@app.route('/login' , methods=['POST'])
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
     login_session['state'] = state
-    # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
 
@@ -172,20 +173,19 @@ def disconnect():
 			gdisconnect()
 			del login_session['gplus_id']
 			del login_session['access_token']
-		if login_session['provider'] == 'facebook':
-			fbdisconnect()
-			del login_session['facebook_id']
-
 		del login_session['username']
 		del login_session['email']
 		del login_session['picture']
 		del login_session['user_id']
 		del login_session['provider']
 		flash("You have successfully been logged out.")
-		return redirect(url_for('showRestaurants'))
+		session.rollback()
+		return redirect(url_for('showLogin'))
 	else:
 		flash("You were not logged in to begin with!")
-		return redirect(url_for('showRestaurants'))
+		return redirect(url_for('showLogin'))
+
+
 
 
 # User Helper function...
@@ -207,6 +207,8 @@ def getUserID(email):
 		return None
 
 
+
+#To get data from api's in serailizable form...
 @app.route('/catalog/categories/JSON')
 def categoriesJSON():
 	categories = session.query(Category).all()
@@ -229,35 +231,35 @@ def listChoiceItemJSON(category_id, list_id, item_id):
 	Item = session.query(Items).filter_by(id = item_id).one()
 	return jsonify(Items = Item.serialize)
 
+
+
 #All Categories...
-@app.route('/')
 @app.route('/catalog')
-@app.route('/catalog/categories')
 def showCategory():
 	categories = session.query(Category).all()
 	if 'username' not in login_session:
-		return render_template('publicCategories.html' , categories = categories)
+		return render_template('publicCategory.html' , categories = categories)
 	else:
-		return render_template('categories.html' , categories = categories)
+		return render_template('showCategory.html' , categories = categories)
 
 
 #Add New Category...
-@app.route('/catalog/categories/new' , methods = ['GET' , 'POST'])
+@app.route('/catalog/new' , methods = ['GET' , 'POST'])
 def newCategory():
 	#return "This page will be for making a new category..."
 	if 'username' not in login_session:
 		return redirect('/login')
 	if request.method == 'POST':
-		newCategory = Category(name = request.form['name'])
-		session.add(newCategory)
+		new_category = Category(name = request.form['name'])
+		session.add(new_category)
 		session.commit()
-		flash("New Category %s Successfully Added" % newCategory.name)
-		return redirect(url_for('showCategory' , catagory_id = newCategory.id))
+		flash("New Category %s Successfully Added" % new_category.name)
+		return redirect(url_for('showCategory'))
 	else:
 		return render_template('newCategory.html')
 
 #Edit an Existing Category Page...
-@app.route('/catalog/categories/<int:category_id>/edit' , methods = ['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/edit' , methods = ['GET' , 'POST'])
 def editCategory(category_id):
 	#return "This page will be for editing existing categories..."
 	editedCategory = session.query(Category).filter_by(id = category_id).one()
@@ -276,7 +278,7 @@ def editCategory(category_id):
 		return render_template('editCategory.html' , i = editedCategory)
 
 #Delete an Existing Category Page...
-@app.route('/catalog/categories/<int:category_id>/delete' , methods =['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/delete' , methods =['GET' , 'POST'])
 def deleteCategory(category_id):
 	#return "This page will be for deleting an existing category"
 	deletedCategory = session.query(Category).filter_by(id = category_id).one()
@@ -296,19 +298,21 @@ def deleteCategory(category_id):
 
 
 #Provides List of Choices available in given Category...
-@app.route('/catalog/categories/<int:category_id>/list')
+@app.route('/catalog/<int:category_id>/list')
 def showCategoryList(category_id):
+	category = session.query(Category).filter_by(id = category_id).one()
 	categorylist = session.query(CategoryList).filter_by(category_id = category_id).all()
+	creator = getUSerInfo(category.user_id)
 	if 'username' not in login_session:
-		return render_template('publicCategoryList.html' , list = categorylist)
+		return render_template('publicCategoryList.html' , list = categorylist, category = category, creator= creator)
 	else:
-		return render_template('categoryList.html' , list = categorylist)
+		return render_template('showCategoryList.html' , list = categorylist, category = category, creator=creator)
 
 
 
 #Add New Choice to the Category list Page...
-@app.route('/catalog/categories/<int:category_id>/list/new' , methods = ['GET' , 'POST'])
-def newToCategoryList():
+@app.route('/catalog/<int:category_id>/list/new' , methods = ['GET' , 'POST'])
+def newToCategoryList(category_id):
 	#return "This page will be for making a new choice for catagorylist..."
 	if 'username' not in login_session:
 		return redirect('/login')
@@ -317,15 +321,15 @@ def newToCategoryList():
 		session.add(newCategoryList)
 		session.commit()
 		flash("New Choice %s Successfully Created" % newCategoryList.name)
-		return redirect(url_for('newListItem' , list_id = newCategoryList.id))
+		return redirect(url_for('newListItem' , category_id = category_id, list_id = newCategoryList.id))
 	else:
 		return render_template('newToCategoryList.html')
 
 #Edit an Existing Choice Page...
-@app.route('/catalog/categories/<int:category_id>/list/<int:list_id>/edit' , methods = ['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/list/<int:list_id>/edit' , methods = ['GET' , 'POST'])
 def editCategoryList(category_id, list_id):
 	#return "This page will be for editing existing Choice in category list..."
-	categoryList = session.query(Category).filter_by(id = category_id).all()
+	categoryList = session.query(Category).filter_by(id = category_id).one()
 	editedChoice = session.query(CategoryList).filter_by(id = list_id).one()
 	if 'username' not in login_session:
 		return redirect('/login')
@@ -339,13 +343,13 @@ def editCategoryList(category_id, list_id):
 		flash("Category List Successfully Edited")
 		return redirect(url_for('showCategoryList'))
 	else:
-		return render_template('editCategoryList.html' , i = editedChoice)
+		return render_template('editCategoryList.html' , i = editedChoice, category = categoryList)
 
 #Delete an Existing Choice Page...
-@app.route('/catalog/categories/<int:category_id>/list/<int:list_id>/delete' , methods =['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/list/<int:list_id>/delete' , methods =['GET' , 'POST'])
 def deleteFromCategoryList(category_id, list_id):
 	#return "This page will be for deleting ran existing choice in category list"
-	CategoryList = session.query(CategoryList).filter_by(category_id = category_id).all()
+	categoryList = session.query(CategoryList).filter_by(category_id = category_id).all()
 	deletedChoice = session.query(CategoryList).filter_by(id = list_id).one()
 	Item = session.query(Items).filter_by(id = list_id).all()
 	if 'username' not in login_session:
@@ -358,23 +362,23 @@ def deleteFromCategoryList(category_id, list_id):
 		flash("Selected Choice Successfully Deleted")
 		return redirect(url_for('showCategoryList'))
 	else:
-		return render_template('deleteFromCategoryList.html' , i = deletedChoice , items = Item)
+		return render_template('deleteFromCategoryList.html' , i = deletedChoice , items = Item, category_id = category_id)
 
 
 #To show all items in particular choice of certain category....
-@app.route('/catalog/categories/<int:category_id>/list/<int:list_id>' , methods = ['GET' , 'POST'])
-@app.route('/catalog/categories/<int:category_id>/list/<int:list_id>/items' , methods = ['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/list/<int:list_id>' , methods = ['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/list/<int:list_id>/items' , methods = ['GET' , 'POST'])
 def showListItems(category_id, list_id):
 	#return "This page is for showing all items in particular choice of certain category"
-	choice = session.query(CategoryList).filter_by(id = category_id).one()
+	choice = session.query(CategoryList).filter_by(id = list_id).one()
 	Item = session.query(Items).filter_by(id = list_id).all()
 	creator = getUSerInfo(choice.user_id)
 	if 'username' not in login_session or creator.id != login_session['user_id']:
 		return render_template('publicListItems.html' , choice = choice , Item = Item , creator = creator)
 	else:
-		return render_template('ListItems.html' , choice = choice, Menu = Menu)
+		return render_template('showListItems.html' , choice = choice, Item = Item, creator = creator)
 #Add a New Item to list of partecular choice of certain category...
-@app.route('/catalog/categories/<int:category_id>/list/<int:list_id>/items/new' , methods = ['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/list/<int:list_id>/items/new' , methods = ['GET' , 'POST'])
 def newListItem(category_id, list_id):
 	#return "This page is for Adding a New Item to list of particular choice of certain category"
 	if 'username' not in login_session:
@@ -391,11 +395,11 @@ def newListItem(category_id, list_id):
 	else:
 		return render_template('newListItem.html' , list_id = list_id, category_id = category_id)
 #Edit an Existing Item to list of particular choice of certain category...
-@app.route('/catalog/categories/<int:category_id>/list/<int:list_id>/items/<int:item_id>/edit' , methods = ['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/list/<int:list_id>/items/<int:item_id>/edit' , methods = ['GET' , 'POST'])
 def editListItem(category_id, list_id, item_id):
 	#return "This page is for editing menu item"
-	choice = session.query(CategoryList).filter_by(id = list_id).one()
-	editedItem = session.query(Items).filter_by(id = menu_id).one()
+	choice = session.query(CategoryList).filter_by(id = list_id).all()
+	editedItem = session.query(Items).filter_by(id = item_id).one()
 	if 'username' not in login_session:
 		return redirect('/login')
 	if choice.user_id != login_session['user_id']:
@@ -416,7 +420,7 @@ def editListItem(category_id, list_id, item_id):
 	else:
 		return render_template('editListItem.html' , i = editedItem , choice = choice)
 #Delete an Existing Item to list of particular choice of certain category...
-@app.route('/catalog/categories/<int:category_id>/list/<int:list_id>/items/<int:item_id>/delete' , methods = ['GET' , 'POST'])
+@app.route('/catalog/<int:category_id>/list/<int:list_id>/items/<int:item_id>/delete' , methods = ['GET' , 'POST'])
 def deleteListItem(category_id, list_id, item_id):
 	#return "This page is for deleting item of list of particular choice of certain category"
 	choice = session.query(CategoryList).filter_by(id = list_id).one()

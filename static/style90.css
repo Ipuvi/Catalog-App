@@ -1,0 +1,188 @@
+
+/*CSS for Templates
+*******Catalog App******
+*/
+
+html,body
+{
+  height: 100%;
+  overflow-x: hidden;
+}
+body
+{
+  background-image: url('images/bg_body.jpg');
+  background-size: cover;
+  margin: 0px;
+}
+
+h1,
+h2,
+h3,
+h4
+{
+  color: #DF013A;
+}
+h1,
+h2
+{
+  font-family: 'georgia', serif;
+  margin: 0;
+}
+
+h1
+{
+  border-bottom: 2px solid #3B170B;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+h2
+{
+  font-size: 1.2em;
+}
+li
+{
+  font-size: 1.4em;
+  font-family: sans-serif;
+  color: #000000;
+}
+
+.creator
+{
+  align-items: center;
+  align-content: center;
+}
+
+
+
+/******Main division******/
+.pane
+{
+  position: relative;
+  border: 2px solid;
+  border-radius: 25px;
+  padding: 5px;
+  margin: 5px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-color: #999999;
+  background-color: #F8E0E0;
+}
+a.pane
+{
+  text-decoration: none;
+  color: #DF013A;
+  font-size: .75em;
+}
+
+.spacer
+{
+  font-size: 0; 
+    height: 85px;
+    line-height: 0;
+}
+
+
+
+/*******Footer*******/
+.footer {
+   position: relative;
+   margin-bottom: 0;
+   left: 0;
+   right: 0;
+   width: 100%;
+   padding-top: 15px;
+   background-color: #151515;
+   color: white;
+   text-align: center;
+   width: 100%;
+}
+
+.footer a, p{
+  text-decoration: none;
+  color: white;
+  font-size : 0.6em;
+}
+.footer h5
+{
+  color: #08088A;
+}
+
+
+/********NavBar*******/
+ul.topnav {
+  list-style-type: none;
+  margin-top: -15px;
+  /*margin: 0;*/
+  padding: 0;
+  overflow: hidden;
+  background-color: rgb(51,51,51);
+}
+
+ul.topnav li {float: left;}
+
+
+ul.topnav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 20px 20px;
+    margin-bottom: -18px;
+    margin-top: 5px;
+    text-decoration: none;
+}
+
+ul.topnav li a:hover:not(.active) {background-color: #111;}
+
+ul.topnav li a.active {background-color: #4CAF50;}
+
+ul.topnav li.right {float: right;
+margin-top: 10px;}
+
+ul.topnav li a.logo{
+    margin-top: 5px;
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 600px){
+    ul.topnav li.right, 
+    ul.topnav li {float: none;}
+
+.copy
+{
+  padding-top: 15px;
+}
+
+
+
+h1,
+h2,
+h3,
+h4
+{
+  color: #DF013A;
+}
+h1,
+h2
+{
+  font-family: 'georgia', serif;
+  margin: 0;
+}
+
+h1
+{
+  border-bottom: 2px solid #3B170B;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+h2
+{
+  font-size: 1.2em;
+}
+li
+{
+  font-size: 1.4em;
+  font-family: sans-serif;
+  color: #000000;
+}

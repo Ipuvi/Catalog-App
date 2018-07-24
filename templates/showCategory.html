@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<!-- Bootstrap CDN and Styles.. -->
+<link rel="stylesheet" type="text/css" href="{{url_for('static' , filename = 'style90.css')}}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+
+
+</head>
+<body>
+
+
+<!-- Nav Bar -->
+<div class="fluid-container">
+<div class="navigationbar">
+	<ul class="topnav" >
+  <li><a class="logo"><img src="{{url_for('static' , filename = 'images/logo.png')}}"></a></li>
+  <li class="right">{%if 'username' not in session %}
+      <a href="{{url_for('showLogin')}}">Login/SignIn</a>
+      {% else %}
+      <a href="{{url_for('disconnect')}}">Logout </a>
+      {% endif %}</a></li>
+  <li class="right"><a href="#about">About</a></li>
+  <li class="right"><a href="#contact">Contact</a></li>
+  <li class="right"><a href="{{url_for('showCategory')}}">Catalog</a></li>
+  </ul>
+</div>
+</div>
+
+<!--End Nav Bar-->
+
+
+<!--Main Section-->
+<div class="fluid-container">
+<div class="container">
+ <div class = "row">
+ <div class="col-md-3"></div>
+ <div class="pane">
+ <div class="col-md-9">
+	<h1>Welcome to Catalog App</h1>
+  </br>
+	 <div class="flash">
+	
+	 {% with messages = get_flashed_messages() %}
+	 {% if messages %}
+
+	 <ul>
+		{% for message in messages %}
+		<li><strong>{{ message }}</strong></li>
+		{% endfor %}
+	 </ul>
+
+	 {% endif %}
+	 {% endwith %}
+	 </div>
+
+     <ul>
+	{% for category in categories %}
+	<a href="{{url_for('showCategoryList', category_id = category.id)}}"><li>{{category.name}}</li></a>
+	<div class="editdeletepane">
+		<a href="{{url_for('editCategory', category_id = category.id)}}"><input type="button" value="Edit"></a>
+		<a href="{{url_for('deleteCategory', category_id = category.id)}}"><input type="button" value="Delete"></a>
+	</div>
+	</br>
+
+	{% endfor %}
+     </ul>
+
+  <h3><a href="{{url_for('newCategory')}}">Click Here</a> to Add New Category...</h3>
+
+ </div>
+ </div>
+ </div>
+</div>
+</div>
+<!--End Main Section-->
+
+
+<!--Footer-->
+<footer>
+<div class="fluid-container">
+<div class="footer">
+    <div class="row">
+      <div class="col-md-5">
+      <h5 class="copy">
+      	&copy; 2018 Catalog App, No rights reserved!
+        <br>
+        Designed &amp; Developed by <a href="https://www.github.com/ipuvi/">Ipuvi Mishra</a>
+        <br>
+        Made with Bootstrap</h5>
+      </div>
+      <div class="col-md-2">
+        <h5>Navigate</h5>
+        <ul class="list-unstyled">
+          <li><a href="Home_project.html">Home</li></a>
+          <li><a href="profile.html">Profile</li></a>
+        </ul>
+      </div>
+      <div class="col-md-2">
+        <h5>About</h5>
+        <ul class="list-unstyled">
+          <li><a href="about.html">About Us</li></a>
+          <li><a href="">Highlights</li></a>
+        </ul>
+      </div>
+      <div class="col-md-3">
+        <h5>Connect with us!</h5>
+        <ul class="list-unstyled">
+          <li><a href="">Contacts</li></a>
+          <li><a href="">FAQs</li></a>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</footer>
+<!--Footer-->
+
+
+
+</body>
+</html>

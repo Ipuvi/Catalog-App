@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<!--Bootstrap CDN and Styles..--> 
+<!--Bootstrap CDN and Styles -->
 <link rel="stylesheet" type="text/css" href="{{url_for('static' , filename = 'style90.css')}}">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
 
@@ -15,7 +15,7 @@
 <!--Nav Bar -->
 <div class="fluid-container">
 <div class="navigationbar">
-  <ul class="topnav" >
+ <ul class="topnav" >
   <li><a class="logo"><img src="{{url_for('static' , filename = 'images/logo.png')}}"></a></li>
   <li class="right">{%if 'username' not in session %}
       <a href="{{url_for('showLogin')}}">Login/SignIn</a>
@@ -28,10 +28,10 @@
   </ul>
 </div>
 </div>
-<!-- End Nav Bar -->
+<!--End Nav Bar-->
 
 
-<!--Main Section -->
+<!--Main Section-->
 <div class="fluid-container">
 <div class="container">
 <div class="spacer">
@@ -42,42 +42,40 @@
  <div class="pane">
  <div class="col-md-9">
 
-<h1><a href="{{url_for('showCategory')}}">{{category.name}}</a></h1>
-<figure class="creator">
-        <img src="{{ creator.picture}}">
-        <figcaption>{{ creator.name }}</figcaption>
-      </figure>
-<div class="flash">
+<h1>Welcome to Catalog App</h1>
+  </br>
+   <div class="flash">
   
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
+   {% with messages = get_flashed_messages() %}
+   {% if messages %}
 
-  <ul>
+   <ul>
     {% for message in messages %}
     <li><strong>{{ message }}</strong></li>
     {% endfor %}
-  </ul>
+   </ul>
 
-  {% endif %}
-  {% endwith %}
-</div>
-{% for item in list %}
-<a href="{{url_for('showListItems', category_id = category.id, list_id = item.id)}}"><li>{{item.name}}</li></a>
-<div class="editdeletepane">
-  <a href = {{url_for('editCategoryList', category_id = category.id, list_id = item.id)}} ><input type="button" value = "Edit"></a>
-  <a href= {{url_for('deleteFromCategoryList', category_id = category.id, list_id = item.id)}} ><input type="button" value = "Delete"></a>
-</div>
-</br>
-{% endfor %}
+   {% endif %}
+   {% endwith %}
+   </div>
 
-<h3><a href="{{url_for('newToCategoryList', category_id = category.id)}}">Click Here</a> to Add More Items...</h3>
+     <ul>
+  {% for category in categories %}
+  <a href="{{url_for('showCategoryList', category_id = category.id)}}"><li>{{category.name}}</li></a>
+  </br>
+
+  {% endfor %}
+     </ul>
+
+  <h3><a href="{{url_for('newCategory')}}">Click Here</a> to Add New Category...</h3>
 
  </div>
  </div>
  </div>
 </div>
 </div>
-<!--End Main Section-->
+<!-- End Main Section -->
+
 
 
 <div class="spacer">
@@ -86,6 +84,7 @@
 <div class="spacer">
   &nbsp;
 </div>
+
 
 
 <!--Footer-->
