@@ -50,4 +50,8 @@ Category Items JSON: `/catalog/categories/<int:category_id>/list/<int:list_id>/J
     Displays items of list for a specific category
 
 Category Item JSON: `/catalog/categories/<int:category_id>/list/<int:list_id>/items/<int:item_id>/JSON`
+<<<<<<< HEAD
     Displays a specific item.
+=======
+    Displays a specific item.
+>>>>>>> 427730c44977fd6ca4af0c83dffa3f2ed99383c9
