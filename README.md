@@ -41,17 +41,13 @@ The following are open to the public:
 
 
 Catalog JSON: `/catalog/categories/JSON`
-    Displays the whole catalog.
+   Displays the whole catalog.
 
 Categories JSON: `/catalog/categories/<int:category_id>/list/JSON`
-     Displays list of specific categories
+   Displays list of specific categories
 
 Category Items JSON: `/catalog/categories/<int:category_id>/list/<int:list_id>/JSON`
     Displays items of list for a specific category
 
 Category Item JSON: `/catalog/categories/<int:category_id>/list/<int:list_id>/items/<int:item_id>/JSON`
-<<<<<<< HEAD
     Displays a specific item.
-=======
-    Displays a specific item.
->>>>>>> 427730c44977fd6ca4af0c83dffa3f2ed99383c9
