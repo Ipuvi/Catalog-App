@@ -2,7 +2,7 @@
 Project 2 - Udacity IoT Foundation Nanodegree
 
 
- # Item Catalog Web App
+ # Catalog Web App
 This web app is a project for the Udacity IoT Foundation Nanodegree Course.
 This web app is a project for the Udacity (https://classroom.udacity.com/nanodegrees/nd501-iniot).
 
